@@ -1,7 +1,10 @@
 package ar.com.alkemy.disney.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +33,12 @@ public class GeneroController {
             rta.message = "El Género ya existe";
             return ResponseEntity.badRequest().body(rta);
         }
+
+    }
+
+    @GetMapping("/generos")
+    public ResponseEntity<List<Genero>> getGeneros(){
+        return ResponseEntity.ok(service.mostrarGeneros());
 
     }
 

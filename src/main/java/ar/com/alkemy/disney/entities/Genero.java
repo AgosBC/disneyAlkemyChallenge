@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "genero")
 public class Genero {
@@ -17,6 +19,7 @@ public class Genero {
 
     private String imagen;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "genero", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pelicula> peliculas = new ArrayList<>();
 
