@@ -3,15 +3,9 @@ package ar.com.alkemy.disney.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ar.com.alkemy.disney.entities.Personaje;
 import ar.com.alkemy.disney.models.request.PersonajeEditRequest;
@@ -125,15 +119,15 @@ public class PersonajeController {
             @RequestBody PersonajeEditRequest personaje) {
 
         GenericResponse rta = new GenericResponse();
-        
+
         Personaje personajeActualizado = service.buscarPorId(id);
 
-        if(id == null){
+        if (id == null) {
             rta.isOk = false;
             rta.message = "No existe Personaje con ese id";
 
             return ResponseEntity.badRequest().body(rta);
-   
+
         } else {
             personajeActualizado.setImagen(personaje.imagen);
             personajeActualizado.setNombre(personaje.nombre);
@@ -149,11 +143,26 @@ public class PersonajeController {
             return ResponseEntity.ok(rta);
         }
 
+    }
 
+    @DeleteMapping("personajes/{id}")
+    public ResponseEntity<GenericResponse> eliminar(@PathVariable Integer id) {
 
+        GenericResponse rta = new GenericResponse();
 
+        if(service.buscarPorId(id) == null){
+            rta.isOk = false;
+            rta.message = "El id ingresado no existe";
+            return ResponseEntity.badRequest().body(rta);
 
-        
+        } else {
+            service.eliminar(id);
+
+            rta.isOk = true;
+            rta.message = "El personaje ha sido eliminado";
+            return ResponseEntity.ok(rta);
+        }
+
     }
 
 }

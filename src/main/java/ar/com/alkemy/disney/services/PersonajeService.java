@@ -48,5 +48,9 @@ public class PersonajeService {
         repo.save(personaje);
     }
 
+    public void eliminar(Integer id) {
+        repo.deleteById(id);
+    }
+
 
 }
