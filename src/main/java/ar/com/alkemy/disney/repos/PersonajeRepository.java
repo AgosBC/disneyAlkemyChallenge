@@ -11,5 +11,9 @@ import ar.com.alkemy.disney.entities.Personaje;
 public interface PersonajeRepository extends JpaRepository<Personaje, Integer> {
 
     List<Personaje> findByNombre(String nombre);
+
+    List<Personaje> findByEdad(Integer edad);
+
+    Personaje findByPersonajeId(Integer personajeId);
     
 }
