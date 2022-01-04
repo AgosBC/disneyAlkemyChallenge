@@ -2,10 +2,9 @@ package ar.com.alkemy.disney.models.request;
 
 import java.util.*;
 
-import ar.com.alkemy.disney.entities.Genero;
 import ar.com.alkemy.disney.entities.Personaje;
 
-public class PeliculaNuevaRequest {
+public class PeliculaNuevaInfo {
 
     public String imagen;
 
@@ -13,7 +12,7 @@ public class PeliculaNuevaRequest {
 
     public Date fechaCreacion;
 
-    public Integer calificacion;
+    public double calificacion;
 
     public Integer generoId;
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ar.com.alkemy.disney.entities.Pelicula;
 import ar.com.alkemy.disney.entities.Personaje;
-import ar.com.alkemy.disney.models.request.PersonajeEditRequest;
+import ar.com.alkemy.disney.models.request.PersonajeNuevoInfo;
 import ar.com.alkemy.disney.repos.PersonajeRepository;
 
 @Service
@@ -15,11 +15,31 @@ public class PersonajeService {
 
     @Autowired
     PersonajeRepository repo;
+
+    @Autowired 
+    PeliculaService peliculaService;
+
     
 
-    public void crear(Personaje personaje) {
-        personaje.setNombre(personaje.getNombre().toLowerCase());
-        repo.save(personaje);
+    public Personaje crear(PersonajeNuevoInfo personajeNuevo) {
+
+        Personaje personaje = new Personaje();
+        personaje.setImagen(personajeNuevo.imagen);
+        personaje.setNombre(personajeNuevo.nombre.toLowerCase());
+        personaje.setEdad(personajeNuevo.edad);
+        personaje.setPeso(personajeNuevo.peso);
+        personaje.setHistoria(personajeNuevo.historia);
+
+        for (Pelicula pelicula : personajeNuevo.peliculas) {
+            peliculaService.buscarPorTitulo(pelicula.getTitulo());
+
+            if (pelicula.equals(null))
+                peliculaService.guardar(pelicula);
+                        
+        }
+        personaje.setPeliculas(personajeNuevo.peliculas);
+       
+        return repo.save(personaje);
     }
 
     public List<Personaje> mostrarPersonajes() {

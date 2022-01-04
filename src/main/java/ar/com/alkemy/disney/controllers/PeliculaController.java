@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import ar.com.alkemy.disney.entities.Genero;
 import ar.com.alkemy.disney.entities.Pelicula;
-import ar.com.alkemy.disney.models.request.PeliculaNuevaRequest;
+import ar.com.alkemy.disney.models.request.PeliculaNuevaInfo;
 import ar.com.alkemy.disney.models.response.GenericResponse;
 import ar.com.alkemy.disney.services.GeneroService;
 import ar.com.alkemy.disney.services.PeliculaService;
@@ -20,23 +20,12 @@ public class PeliculaController {
     @Autowired
     GeneroService generoService;
 
-    @PostMapping("api/pelicula")
-    public ResponseEntity<GenericResponse> postPersonajes(@RequestBody PeliculaNuevaRequest pR) {
+    @PostMapping("/peliculas")
+    public ResponseEntity<GenericResponse> postPelicula(@RequestBody PeliculaNuevaInfo peliculaNueva) {
 
         GenericResponse rta = new GenericResponse();
 
-        Pelicula pelicula = new Pelicula();
-
-        pelicula.setImagen(pR.imagen);
-        pelicula.setTitulo(pR.titulo);
-        pelicula.setFechaCreacion(pR.fechaCreacion);
-        pelicula.setCalificacion(pR.calificacion);
-        pelicula.setPersonajes(pR.personajes);
-        
-        Genero genero = generoService.buscarPorId(pR.generoId);
-        genero.agregarPelicula(pelicula);
-
-        service.guardar(pelicula);
+        Pelicula pelicula = service.crear(peliculaNueva);
 
         rta.id = pelicula.getPeliculaId();
         rta.isOk = true;
@@ -48,7 +37,7 @@ public class PeliculaController {
 
     @PutMapping("api/pelicula/{id}")
     public ResponseEntity<GenericResponse> modificar(@PathVariable Integer id,
-            @RequestBody PeliculaNuevaRequest pelicula) {
+            @RequestBody PeliculaNuevaInfo pelicula) {
 
         GenericResponse rta = new GenericResponse();
 

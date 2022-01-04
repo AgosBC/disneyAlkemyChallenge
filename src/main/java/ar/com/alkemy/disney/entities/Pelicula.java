@@ -25,7 +25,7 @@ public class Pelicula {
     @Temporal(TemporalType.DATE)
     private Date fechaCreacion;
 
-    private Integer calificacion;
+    private double calificacion;
 
     @ManyToOne
     @JoinColumn(name = "genero_id", referencedColumnName = "genero_id")
@@ -76,11 +76,11 @@ public class Pelicula {
     }
 
     
-    public Integer getCalificacion() {
+    public double getCalificacion() {
         return calificacion;
     }
 
-    public void setCalificacion(Integer calificacion) {
+    public void setCalificacion(double calificacion) {
         this.calificacion = calificacion;
     }
 

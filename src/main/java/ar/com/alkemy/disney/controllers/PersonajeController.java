@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ar.com.alkemy.disney.entities.Personaje;
-import ar.com.alkemy.disney.models.request.PersonajeEditRequest;
+import ar.com.alkemy.disney.models.request.PersonajeNuevoInfo;
 import ar.com.alkemy.disney.models.response.GenericResponse;
 import ar.com.alkemy.disney.models.response.PersonajeResponse;
 import ar.com.alkemy.disney.services.PersonajeService;
@@ -22,11 +22,11 @@ public class PersonajeController {
     PersonajeService service;
 
     @PostMapping("/personajes")
-    public ResponseEntity<GenericResponse> postPersonajes(@RequestBody Personaje personaje) {
+    public ResponseEntity<GenericResponse> postPersonajes(@RequestBody PersonajeNuevoInfo personajeNuevo) {
 
         GenericResponse rta = new GenericResponse();
         // if admin else forbiden
-        service.crear(personaje);
+        Personaje personaje = service.crear(personajeNuevo);
 
         rta.id = personaje.getPersonajeId();
         rta.isOk = true;
@@ -116,7 +116,7 @@ public class PersonajeController {
 
     @PutMapping(value = "personaje/{id}")
     public ResponseEntity<GenericResponse> modificar(@PathVariable Integer id,
-            @RequestBody PersonajeEditRequest personaje) {
+            @RequestBody PersonajeNuevoInfo personaje) {
 
         GenericResponse rta = new GenericResponse();
 

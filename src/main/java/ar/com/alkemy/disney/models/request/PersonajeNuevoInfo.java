@@ -4,10 +4,10 @@ import java.util.*;
 
 import ar.com.alkemy.disney.entities.Pelicula;
 
-public class PersonajeEditRequest {
+public class PersonajeNuevoInfo {
 
     
-    public PersonajeEditRequest(String imagen, String nombre, Integer edad, Double peso, String historia,
+    public PersonajeNuevoInfo(String imagen, String nombre, Integer edad, Double peso, String historia,
             List<Pelicula> peliculas) {
         this.imagen = imagen;
         this.nombre = nombre;
@@ -26,6 +26,8 @@ public class PersonajeEditRequest {
     public Double peso;
 
     public String historia;
+
+    //public List<Pelicula> peliculas = new ArrayList<>();
 
     public List<Pelicula> peliculas = new ArrayList<>();
     
