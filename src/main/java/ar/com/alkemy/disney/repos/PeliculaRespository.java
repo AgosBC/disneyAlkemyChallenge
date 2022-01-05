@@ -1,6 +1,9 @@
 package ar.com.alkemy.disney.repos;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import ar.com.alkemy.disney.entities.Pelicula;
@@ -8,5 +11,10 @@ import ar.com.alkemy.disney.entities.Pelicula;
 public interface PeliculaRespository extends JpaRepository<Pelicula, Integer> {
 
     Pelicula findByPeliculaId(Integer id);
-    Pelicula findByTitulo(String title);
+    List<Pelicula> findByTitulo(String title);
+    
+    @Query ("SELECT p FROM Pelicula p ORDER BY p.titulo ASC")
+    List<Pelicula> findAllOrderByAsc();
+    @Query ("SELECT p FROM Pelicula p ORDER BY p.titulo DESC")
+    List<Pelicula> findAllOrderByDESC();
 }
