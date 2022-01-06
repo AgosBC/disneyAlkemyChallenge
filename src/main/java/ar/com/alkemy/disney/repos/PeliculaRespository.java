@@ -12,9 +12,8 @@ public interface PeliculaRespository extends JpaRepository<Pelicula, Integer> {
 
     Pelicula findByPeliculaId(Integer id);
     List<Pelicula> findByTitulo(String title);
-    
-    @Query ("SELECT p FROM Pelicula p ORDER BY p.titulo ASC")
-    List<Pelicula> findAllOrderByAsc();
-    @Query ("SELECT p FROM Pelicula p ORDER BY p.titulo DESC")
-    List<Pelicula> findAllOrderByDESC();
+        
+    List<Pelicula> findAllByOrderByTituloAsc();
+    //@Query ("SELECT p FROM Pelicula p ORDER BY p.titulo DESC")
+    List<Pelicula> findAllByOrderByTituloDesc();
 }

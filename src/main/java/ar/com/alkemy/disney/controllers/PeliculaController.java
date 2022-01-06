@@ -15,7 +15,6 @@ import ar.com.alkemy.disney.services.GeneroService;
 import ar.com.alkemy.disney.services.PeliculaService;
 
 @RestController
-//@RequestMapping("/movies")
 public class PeliculaController {
 
     @Autowired
@@ -53,7 +52,8 @@ public class PeliculaController {
 
             return ResponseEntity.badRequest().body(rta);
 
-        } else {
+        } else {//corregir hacer un put de personajes
+
             peliculaActualizado.setImagen(pelicula.imagen);
             peliculaActualizado.setTitulo(pelicula.titulo);
             peliculaActualizado.setFechaCreacion(pelicula.fechaCreacion);
@@ -74,49 +74,44 @@ public class PeliculaController {
     }
 
     @GetMapping(value = "/movies")
-    public ResponseEntity<List<PeliculaResponse>> mostrarPeliculas(){
+    public ResponseEntity<List<PeliculaResponse>> mostrarPeliculas() {
 
         return ResponseEntity.ok(service.mostrarPeliculas());
     }
 
-    @GetMapping(value ="/movies", params = "order")
-    public ResponseEntity<List<Pelicula>> mostrarPeliculasOrden(@RequestParam String order) {
+    @GetMapping(value = "/movies", params = "order")
+    public ResponseEntity<List<Pelicula>> mostrarPeliculasOrden(@RequestParam(defaultValue = "ASC") String order) {
 
-        if(order.equalsIgnoreCase("ASC") || order.equalsIgnoreCase("DESC"))
-            return ResponseEntity.ok(service.mostrarPeliculasOrden(order));       
+        if (order.equalsIgnoreCase("ASC") || order.equalsIgnoreCase("DESC"))
+            return ResponseEntity.ok(service.mostrarPeliculasOrden(order));
 
-        else return ResponseEntity.badRequest().build();
-       
+        else
+            return ResponseEntity.badRequest().build();
 
     }
 
-    @GetMapping(value ="/movies", params = "name")
-    public ResponseEntity<List<Pelicula>> buscarPeliculasPorNombre(@RequestParam String name) {
+    @GetMapping(value = "/movies", params = "name")
+    public ResponseEntity<List<Pelicula>> buscarPorNombre(@RequestParam String name) {
 
         List<Pelicula> peliculas = service.buscarPorTitulo(name);
 
-        if(peliculas.isEmpty())
+        if (peliculas.isEmpty())
             return ResponseEntity.notFound().build();
         else
             return ResponseEntity.ok(peliculas);
-       
 
     }
 
+    @GetMapping(value = "/movies", params = "genre")
+    public ResponseEntity<List<Pelicula>> filtrarPorGenero(@RequestParam(name = "genre") Integer idGenero){
 
-    /*@GetMapping("/movies")
-    public ResponseEntity<List<Pelicula>> buscarPorNombre(@RequestParam String name){
-                
-        List<Pelicula> peliculas = service.buscarPorTitulo(name);
+        List<Pelicula> peliculas = service.filtrarPorGenero(idGenero);
 
-        if(peliculas.equals(null))
-            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(peliculas);
+
         
-            return ResponseEntity.ok(peliculas);
+    }
 
-
-            @RequestParam(required = false) String name, @RequestParam(required = false) Genre genero)
-
-    }*/
+   
 
 }

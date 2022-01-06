@@ -13,6 +13,8 @@ public class PersonajeResponse {
         this.imagen = imagen;
         this.nombre = nombre;
     }
+    @JsonInclude(Include.NON_NULL)
+    public Integer personajeId;
 
     public String imagen;
 

@@ -13,7 +13,7 @@ import ar.com.alkemy.disney.models.response.GenericResponse;
 import ar.com.alkemy.disney.models.response.PersonajeResponse;
 import ar.com.alkemy.disney.services.PersonajeService;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 
 @RestController
 public class PersonajeController {
@@ -21,7 +21,7 @@ public class PersonajeController {
     @Autowired
     PersonajeService service;
 
-    @PostMapping("/personajes")
+    @PostMapping(value = "/characters")
     public ResponseEntity<GenericResponse> postPersonajes(@RequestBody PersonajeNuevoInfo personajeNuevo) {
 
         GenericResponse rta = new GenericResponse();
@@ -36,83 +36,46 @@ public class PersonajeController {
 
     }
 
-    @GetMapping(value = "/personajes")
-    @ResponseBody
-    public ResponseEntity<List<PersonajeResponse>> getPersonajes(@RequestParam(required = false) String name,
-            @RequestParam(required = false) Integer age) {
+    @GetMapping(value = "/characters")
+    public ResponseEntity<List<PersonajeResponse>> getPersonajes(){
 
+        List<Personaje> personajes = service.mostrarPersonajes();
         List<PersonajeResponse> lista = new ArrayList<>();
 
-        if (name == null && age == null) {
-            List<Personaje> personajes = service.mostrarPersonajes();
-            for (Personaje personaje : personajes) {
-                PersonajeResponse pR = new PersonajeResponse(personaje.getImagen(), personaje.getNombre());
-                lista.add(pR);
-
-            }
-            return ResponseEntity.ok(lista);
-
-        } else {
-
-            List<Personaje> personajes = service.buscar(name.toLowerCase(), age);// completar
-
-            for (Personaje personaje : personajes) {
-                PersonajeResponse pR = new PersonajeResponse();
-                pR.nombre = personaje.getNombre();
-                pR.imagen = personaje.getImagen();
-                pR.edad = personaje.getEdad();
-                pR.peso = personaje.getPeso();
-                pR.historia = personaje.getHistoria();
-                lista.add(pR);
-            }
-
-            /*
-             * List<Personaje> personajes = service.buscarPorNombre(name.toLowerCase());
-             * 
-             * for (Personaje personaje : personajes) {
-             * PersonajeResponse pR = new PersonajeResponse();
-             * pR.nombre = personaje.getNombre();
-             * pR.imagen = personaje.getImagen();
-             * pR.edad = personaje.getEdad();
-             * pR.peso = personaje.getPeso();
-             * pR.historia = personaje.getHistoria();
-             * lista.add(pR);
-             * 
-             * }
-             */
-
-            return ResponseEntity.ok(lista);
+        for (Personaje personaje : personajes) {
+            PersonajeResponse pR = new PersonajeResponse(personaje.getImagen(), personaje.getNombre());
+            lista.add(pR);
 
         }
 
+        return ResponseEntity.ok(lista);
+
     }
 
-    /*
-     * @GetMapping(value = "/personajes")
-     * 
-     * @ResponseBody
-     * public ResponseEntity<List<PersonajeResponse>> getPersonajes(@RequestParam
-     * Integer age) {
-     * 
-     * List<PersonajeResponse> lista = new ArrayList<>();
-     * 
-     * List<Personaje> personajes = service.buscarPorEdad(age);
-     * 
-     * for (Personaje personaje : personajes) {
-     * PersonajeResponse pR = new PersonajeResponse();
-     * pR.nombre = personaje.getNombre();
-     * pR.imagen = personaje.getImagen();
-     * pR.edad = personaje.getEdad();
-     * pR.peso = personaje.getPeso();
-     * pR.historia = personaje.getHistoria();
-     * lista.add(pR);
-     * 
-     * }
-     * 
-     * return ResponseEntity.ok(lista);
-     * 
-     * }
-     */
+    @GetMapping(value = "/characters", params = "name")
+    public ResponseEntity<List<Personaje>> getPersonaje(@RequestParam String name) { //busqueda por nombre da el objeto personaje completo
+
+        List<Personaje> personajes = service.buscarPorNombre(name);     
+                  
+        if(personajes.isEmpty())
+            return ResponseEntity.noContent().build();
+        
+        return ResponseEntity.ok(personajes);
+        
+
+    }
+    @GetMapping(value = "/caracters", params = "age")
+    public ResponseEntity<List<PersonajeResponse>> filtarPorEdad(@RequestParam Integer age){
+        
+        return ResponseEntity.ok(service.filtrarPorEdad(age));
+        
+    }
+
+    @GetMapping(value = "/characters", params = "movies")
+    public ResponseEntity<List<PersonajeResponse>> mostrarPersonajesDePelicula(@RequestParam(name = "movies")Integer idMovie){
+
+        return ResponseEntity.ok(service.mostrarPersonajesDePelicula(idMovie));
+    }
 
     @PutMapping(value = "personaje/{id}")
     public ResponseEntity<GenericResponse> modificar(@PathVariable Integer id,
