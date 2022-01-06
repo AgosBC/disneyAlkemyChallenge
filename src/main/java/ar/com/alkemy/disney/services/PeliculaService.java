@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import ar.com.alkemy.disney.entities.Genero;
 import ar.com.alkemy.disney.entities.Pelicula;
+import ar.com.alkemy.disney.entities.Personaje;
+import ar.com.alkemy.disney.models.request.AgregarPeliculaAlPersonaje;
 import ar.com.alkemy.disney.models.request.PeliculaNuevaInfo;
 import ar.com.alkemy.disney.models.response.PeliculaResponse;
 import ar.com.alkemy.disney.repos.PeliculaRespository;
@@ -20,6 +22,7 @@ public class PeliculaService {
     @Autowired
     GeneroService generoService;
 
+   
     public Pelicula buscarPorId(Integer id) {
         return repo.findByPeliculaId(id);
     }
@@ -39,7 +42,7 @@ public class PeliculaService {
         pelicula.setTitulo(peliculaNueva.titulo.toLowerCase());
         pelicula.setFechaCreacion(peliculaNueva.fechaCreacion);
         pelicula.setCalificacion(peliculaNueva.calificacion);
-        pelicula.setPersonajes(peliculaNueva.personajes);
+        
 
         Genero genero = generoService.buscarPorId(peliculaNueva.generoId);
         genero.agregarPelicula(pelicula);
@@ -89,6 +92,15 @@ public class PeliculaService {
 
     
     }
+
+    /*public void agregarPersonaje(Integer peliculaId, Integer personajeId) {
+
+        Pelicula pelicula = this.buscarPorId(peliculaId);
+        Personaje personaje = personajeService.buscarPorId(personajeId);
+
+        pelicula.setPersonajes(personaje);
+
+    }*/
 
     
 

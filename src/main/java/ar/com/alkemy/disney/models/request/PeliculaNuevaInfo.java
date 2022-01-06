@@ -16,7 +16,7 @@ public class PeliculaNuevaInfo {
 
     public Integer generoId;
 
-    public List<Personaje> personajes = new ArrayList<>();
+
 
     
 }

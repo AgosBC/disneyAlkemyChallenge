@@ -18,7 +18,7 @@ public class GeneroController {
     @Autowired
     public GeneroService service;
 
-    @PostMapping("/generos")
+    @PostMapping("/genre")
     public ResponseEntity<GenericResponse> postGenero(@RequestBody Genero genero) {
         GenericResponse rta = new GenericResponse();
 
@@ -36,7 +36,7 @@ public class GeneroController {
 
     }
 
-    @GetMapping("/generos")
+    @GetMapping("/genre")
     public ResponseEntity<List<Genero>> getGeneros(){
         return ResponseEntity.ok(service.mostrarGeneros());
 

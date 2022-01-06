@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ar.com.alkemy.disney.entities.Personaje;
+import ar.com.alkemy.disney.models.request.AgregarPeliculaAlPersonaje;
 import ar.com.alkemy.disney.models.request.PersonajeNuevoInfo;
 import ar.com.alkemy.disney.models.response.GenericResponse;
 import ar.com.alkemy.disney.models.response.PersonajeResponse;
@@ -34,6 +35,17 @@ public class PersonajeController {
 
         return ResponseEntity.ok(rta);
 
+    }
+
+    @PutMapping(value = "characters/{id}")
+    public ResponseEntity<GenericResponse> agregarPeliculasAPersonaje(@PathVariable Integer id, @RequestBody AgregarPeliculaAlPersonaje peliculaId){
+        GenericResponse gR = new GenericResponse();
+        service.agregarPeliculasAPersonaje(id, peliculaId.peliculaId);
+
+        gR.isOk = true;
+        gR.message = "las peliculas han sido agregadas correctamente";
+
+        return ResponseEntity.ok(gR);
     }
 
     @GetMapping(value = "/characters")
@@ -97,7 +109,7 @@ public class PersonajeController {
             personajeActualizado.setEdad(personaje.edad);
             personajeActualizado.setPeso(personaje.peso);
             personajeActualizado.setHistoria(personaje.historia);
-            personajeActualizado.setPeliculas(personaje.peliculas);
+            //personajeActualizado.setPeliculas(personaje.peliculas);
             service.guardar(personajeActualizado);
 
             rta.isOk = true;

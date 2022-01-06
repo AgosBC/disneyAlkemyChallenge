@@ -7,14 +7,13 @@ import ar.com.alkemy.disney.entities.Pelicula;
 public class PersonajeNuevoInfo {
 
     
-    public PersonajeNuevoInfo(String imagen, String nombre, Integer edad, Double peso, String historia,
-            List<Pelicula> peliculas) {
+    public PersonajeNuevoInfo(String imagen, String nombre, Integer edad, Double peso, String historia) {
         this.imagen = imagen;
         this.nombre = nombre;
         this.edad = edad;
         this.peso = peso;
         this.historia = historia;
-        this.peliculas = peliculas;
+       
     }
 
     public String imagen;
@@ -27,8 +26,6 @@ public class PersonajeNuevoInfo {
 
     public String historia;
 
-    //public List<Pelicula> peliculas = new ArrayList<>();
-
-    public List<Pelicula> peliculas = new ArrayList<>();
+    
     
 }
