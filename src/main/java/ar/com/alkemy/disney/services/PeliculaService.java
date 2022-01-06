@@ -52,7 +52,7 @@ public class PeliculaService {
 
     public List<PeliculaResponse> mostrarPeliculas() {
 
-        List<Pelicula> peliculas = repo.findAllOrderByAsc();
+        List<Pelicula> peliculas = repo.findAllByOrderByTituloAsc();
         List<PeliculaResponse> lista = new ArrayList<>();
         for (Pelicula pelicula : peliculas) {
             PeliculaResponse pR = new PeliculaResponse(pelicula.getImagen(), pelicula.getTitulo(), pelicula.getFechaCreacion());
@@ -64,12 +64,35 @@ public class PeliculaService {
     public List<Pelicula> mostrarPeliculasOrden(String order) {
         
         if (order.equalsIgnoreCase("DESC"))
-            return repo.findAllOrderByDESC();
+            return repo.findAllByOrderByTituloDesc();
         
-        else return repo.findAllOrderByAsc();   
+        else return repo.findAllByOrderByTituloAsc();   
     
         
     }
+
+    public List<Pelicula> filtrarPorGenero(Integer genreId) {
+        
+        List<Pelicula> peliculas = repo.findAll();
+        List<Pelicula> peliculaPorGenero = new ArrayList<>();
+        
+        Genero genero = generoService.buscarPorId(genreId);
+
+        for (Pelicula pelicula : peliculas) {
+            if (pelicula.getGenero().getNombre().equals(genero.getNombre()))
+                peliculaPorGenero.add(pelicula);
+            
+        }
+
+        return peliculaPorGenero;
+
+
+    
+    }
+
+    
+
+    
 
     
 
