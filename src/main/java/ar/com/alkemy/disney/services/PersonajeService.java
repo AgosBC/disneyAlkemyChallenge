@@ -80,6 +80,7 @@ public class PersonajeService {
     }
 
     public List<PersonajeResponse> mostrarPersonajesDePelicula(Integer idMovie) {
+        
         Pelicula pelicula = peliculaService.buscarPorId(idMovie);
 
         List<Personaje> personajes = pelicula.getPersonajes();

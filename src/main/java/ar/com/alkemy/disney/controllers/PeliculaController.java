@@ -2,13 +2,17 @@ package ar.com.alkemy.disney.controllers;
 
 import java.util.*;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import ar.com.alkemy.disney.entities.Genero;
 import ar.com.alkemy.disney.entities.Pelicula;
 import ar.com.alkemy.disney.models.request.AgregarPeliculaAlPersonaje;
+import ar.com.alkemy.disney.models.request.ErrorItemInfo;
 import ar.com.alkemy.disney.models.request.PeliculaNuevaInfo;
 import ar.com.alkemy.disney.models.response.GenericResponse;
 import ar.com.alkemy.disney.models.response.PeliculaResponse;
@@ -25,9 +29,19 @@ public class PeliculaController {
     GeneroService generoService;
 
     @PostMapping("/movies")
-    public ResponseEntity<GenericResponse> postPelicula(@RequestBody PeliculaNuevaInfo peliculaNueva) {
+    public ResponseEntity<GenericResponse> postPelicula(@Valid @RequestBody PeliculaNuevaInfo peliculaNueva, BindingResult results) {
 
         GenericResponse rta = new GenericResponse();
+
+        if(results.hasErrors()){
+            rta.isOk= false;
+            rta.message = "Hubo errores al recibir el request";
+            results.getFieldErrors().stream().forEach(e -> {
+                rta.errors.add(new ErrorItemInfo(e.getField(), e.getDefaultMessage()));
+            });
+
+            return ResponseEntity.badRequest().body(rta);
+        }
 
         Pelicula pelicula = service.crear(peliculaNueva);
 
