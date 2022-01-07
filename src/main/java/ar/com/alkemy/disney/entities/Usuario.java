@@ -101,6 +101,18 @@ public class Usuario {
         this.visitante = visitante;
     }
 
+    public Integer obtenerEntityId() {
+        switch (this.getTipoUsuario()) {
+            case Visitante:
+                return this.getVisitante().getVisitanteId();
+            case ADMIN:
+                return this.getAdmin().getAdminId();
+            default:
+                break;
+        }
+        return null;
+    }
+
 
 
     public enum TipoUsuarioEnum {
