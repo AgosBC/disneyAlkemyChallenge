@@ -41,8 +41,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
         String jwtToken = null;
 
-        // JWT Token viene de la forma "Bearer token". Remover el texto Bearer y obtener
-        // solo el Token
+       
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 
             jwtToken = requestTokenHeader.substring(7);
@@ -65,7 +64,6 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
         }
 
-        // una vez obtenido, validarlo.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             // Usar este si queremos buscar desde la base de datos siempre

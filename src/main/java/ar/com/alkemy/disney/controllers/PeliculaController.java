@@ -11,16 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import ar.com.alkemy.disney.entities.Genero;
 import ar.com.alkemy.disney.entities.Pelicula;
-import ar.com.alkemy.disney.entities.Personaje;
-import ar.com.alkemy.disney.models.request.AgregarPeliculaAlPersonaje;
-import ar.com.alkemy.disney.models.request.AgregarPersonajeAPelicula;
 import ar.com.alkemy.disney.models.request.ErrorItemInfo;
 import ar.com.alkemy.disney.models.request.PeliculaNuevaInfo;
 import ar.com.alkemy.disney.models.response.GenericResponse;
 import ar.com.alkemy.disney.models.response.PeliculaResponse;
 import ar.com.alkemy.disney.services.GeneroService;
 import ar.com.alkemy.disney.services.PeliculaService;
-import ar.com.alkemy.disney.services.PersonajeService;
 
 @RestController
 public class PeliculaController {
@@ -32,12 +28,13 @@ public class PeliculaController {
     GeneroService generoService;
 
     @PostMapping("/movies")
-    public ResponseEntity<GenericResponse> postPelicula(@Valid @RequestBody PeliculaNuevaInfo peliculaNueva, BindingResult results) {
+    public ResponseEntity<GenericResponse> postPelicula(@Valid @RequestBody PeliculaNuevaInfo peliculaNueva,
+            BindingResult results) {
 
         GenericResponse rta = new GenericResponse();
 
-        if(results.hasErrors()){
-            rta.isOk= false;
+        if (results.hasErrors()) {
+            rta.isOk = false;
             rta.message = "Hubo errores al recibir el request";
             results.getFieldErrors().stream().forEach(e -> {
                 rta.errors.add(new ErrorItemInfo(e.getField(), e.getDefaultMessage()));
@@ -56,21 +53,13 @@ public class PeliculaController {
 
     }
 
-    /*@PutMapping(value = "/movies/{id}")
-    public ResponseEntity<?> agregarPersonajeAPelicula (@PathVariable(name = "id") Integer peliculaId, @RequestBody AgregarPersonajeAPelicula personajesId){
-        List<Personaje> personajes = new ArrayList<>();
-    
-
-        return null;
-    }*/
-
     @GetMapping(value = "/movies")
     public ResponseEntity<List<PeliculaResponse>> mostrarPeliculas() {
 
         return ResponseEntity.ok(service.mostrarPeliculas());
     }
 
-    @GetMapping(value = "/movies", params = "order")//muestra peli completa, todos los detalles
+    @GetMapping(value = "/movies", params = "order") // muestra peli completa, todos los detalles
     public ResponseEntity<List<Pelicula>> mostrarPeliculasOrden(@RequestParam(defaultValue = "ASC") String order) {
 
         if (order.equalsIgnoreCase("ASC") || order.equalsIgnoreCase("DESC"))
@@ -94,17 +83,16 @@ public class PeliculaController {
     }
 
     @GetMapping(value = "/movies", params = "genre")
-    public ResponseEntity<List<Pelicula>> filtrarPorGenero(@RequestParam(name = "genre") Integer idGenero){
+    public ResponseEntity<List<Pelicula>> filtrarPorGenero(@RequestParam(name = "genre") Integer idGenero) {
 
         List<Pelicula> peliculas = service.filtrarPorGenero(idGenero);
 
         return ResponseEntity.ok(peliculas);
 
-        
     }
 
     @DeleteMapping(value = "/movie/{id}")
-    public ResponseEntity<GenericResponse> eliminarPelicula(@PathVariable Integer id){
+    public ResponseEntity<GenericResponse> eliminarPelicula(@PathVariable Integer id) {
         service.eliminarPelicula(id);
 
         GenericResponse rta = new GenericResponse();
@@ -114,6 +102,32 @@ public class PeliculaController {
         return ResponseEntity.ok(rta);
     }
 
-   
+    @PutMapping("/movies/{id}")
+    public ResponseEntity<GenericResponse> editar(@PathVariable Integer id, @RequestBody PeliculaNuevaInfo peliculaActualizada) {
 
+        GenericResponse rta = new GenericResponse();
+
+        Pelicula p = service.buscarPorId(id);
+
+        if (p == null) {
+            rta.isOk = false;
+            rta.message = "El id ingresado no existe";
+            return ResponseEntity.badRequest().body(rta);
+        } else {
+
+            p.setImagen(peliculaActualizada.imagen);
+            p.setTitulo(peliculaActualizada.titulo);
+            p.setFechaCreacion(peliculaActualizada.fechaCreacion);
+            p.setCalificacion(peliculaActualizada.calificacion);
+
+            Genero genero = generoService.buscarPorId(peliculaActualizada.generoId);
+            genero.agregarPelicula(p);
+
+            service.guardar(p);
+
+            rta.isOk = true;
+            rta.message = "la película se a actualizado con éxito";
+            return ResponseEntity.ok(rta);
+        }
+    }
 }

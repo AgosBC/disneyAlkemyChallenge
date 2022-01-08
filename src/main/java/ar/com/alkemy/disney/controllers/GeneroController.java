@@ -22,13 +22,13 @@ public class GeneroController {
     public ResponseEntity<GenericResponse> postGenero(@RequestBody Genero genero) {
         GenericResponse rta = new GenericResponse();
 
-        if (service.crear(genero)){
+        if (service.crear(genero)) {
 
-        rta.id = genero.getGeneroId();
-        rta.isOk = true;
-        rta.message = "Genero Creado con exito";
-        return ResponseEntity.ok(rta);
-        }else {
+            rta.id = genero.getGeneroId();
+            rta.isOk = true;
+            rta.message = "Genero Creado con exito";
+            return ResponseEntity.ok(rta);
+        } else {
             rta.isOk = false;
             rta.message = "El Género ya existe";
             return ResponseEntity.badRequest().body(rta);
@@ -37,13 +37,9 @@ public class GeneroController {
     }
 
     @GetMapping("/genre")
-    public ResponseEntity<List<Genero>> getGeneros(){
+    public ResponseEntity<List<Genero>> getGeneros() {
         return ResponseEntity.ok(service.mostrarGeneros());
 
     }
-
-    
-
-    
 
 }

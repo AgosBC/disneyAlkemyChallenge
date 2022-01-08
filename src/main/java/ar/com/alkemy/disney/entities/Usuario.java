@@ -105,7 +105,7 @@ public class Usuario {
         switch (this.getTipoUsuario()) {
             case ADMIN:
                 return this.getAdmin().getAdminId();
-            case visitante:
+            case VISITANTE:
                 return this.getVisitante().getVisitanteId();
             default:
                 break;
@@ -116,7 +116,7 @@ public class Usuario {
 
 
     public enum TipoUsuarioEnum {
-        ADMIN(1), visitante(2);
+        ADMIN(1), VISITANTE(2);
 
         private final Integer value;
 

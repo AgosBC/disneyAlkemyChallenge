@@ -1,8 +1,5 @@
 package ar.com.alkemy.disney.models.request;
 
-import java.util.*;
-
-import ar.com.alkemy.disney.entities.Pelicula;
 
 public class PersonajeNuevoInfo {
 

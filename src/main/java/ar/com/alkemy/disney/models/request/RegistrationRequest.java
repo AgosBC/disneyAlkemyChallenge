@@ -21,7 +21,7 @@ public class RegistrationRequest {
     public String email;
 
     @NotBlank(message =  "el usuario no puede estar vacio")
-    @Size(min = 6, max = 20, message = "El usuario debe tener entre 8 y 20 caracteres")
+    @Size(min = 4, max = 20, message = "El usuario debe tener entre 4 y 20 caracteres")
     public String username;
 
     public TipoUsuarioEnum userType;

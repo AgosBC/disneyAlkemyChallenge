@@ -15,7 +15,6 @@ import ar.com.alkemy.disney.models.response.PersonajeResponse;
 import ar.com.alkemy.disney.services.PersonajeService;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @RestController
 public class PersonajeController {
 
@@ -38,7 +37,8 @@ public class PersonajeController {
     }
 
     @PutMapping(value = "characters/{id}")
-    public ResponseEntity<GenericResponse> agregarPeliculasAPersonaje(@PathVariable Integer id, @RequestBody AgregarPeliculaAlPersonaje peliculaId){
+    public ResponseEntity<GenericResponse> agregarPeliculasAPersonaje(@PathVariable Integer id,
+            @RequestBody AgregarPeliculaAlPersonaje peliculaId) {
         GenericResponse gR = new GenericResponse();
         service.agregarPeliculasAPersonaje(id, peliculaId.peliculaId);
 
@@ -49,7 +49,7 @@ public class PersonajeController {
     }
 
     @GetMapping(value = "/characters")
-    public ResponseEntity<List<PersonajeResponse>> getPersonajes(){
+    public ResponseEntity<List<PersonajeResponse>> getPersonajes() {
 
         List<Personaje> personajes = service.mostrarPersonajes();
         List<PersonajeResponse> lista = new ArrayList<>();
@@ -65,35 +65,30 @@ public class PersonajeController {
     }
 
     @GetMapping(value = "/characters", params = "name")
-    public ResponseEntity<List<Personaje>> getPersonaje(@RequestParam String name) { //busqueda por nombre da el objeto personaje completo
+    public ResponseEntity<List<Personaje>> getPersonaje(@RequestParam String name) { // busqueda por nombre da el objeto
+                                                                                     // personaje completo
 
-        List<Personaje> personajes = service.buscarPorNombre(name);     
-                  
-        if(personajes.isEmpty())
+        List<Personaje> personajes = service.buscarPorNombre(name);
+
+        if (personajes.isEmpty())
             return ResponseEntity.noContent().build();
-        
+
         return ResponseEntity.ok(personajes);
-        
 
     }
+
     @GetMapping(value = "/caracters", params = "age")
-    public ResponseEntity<List<PersonajeResponse>> filtarPorEdad(@RequestParam Integer age){
-        
+    public ResponseEntity<List<PersonajeResponse>> filtarPorEdad(@RequestParam Integer age) {
+
         return ResponseEntity.ok(service.filtrarPorEdad(age));
-        
+
     }
 
     @GetMapping(value = "/characters", params = "movies")
-    public ResponseEntity<List<PersonajeResponse>> mostrarPersonajesDePelicula(@RequestParam(name = "movies")Integer idMovie){
+    public ResponseEntity<List<PersonajeResponse>> mostrarPersonajesDePelicula(
+            @RequestParam(name = "movies") Integer idMovie) {
 
         return ResponseEntity.ok(service.mostrarPersonajesDePelicula(idMovie));
-    }
-
-    @GetMapping(value = "/caracters/details")
-    public ResponseEntity<List<Personaje>> mostrarDetalles(@RequestParam Integer age){
-        
-        return ResponseEntity.ok(service.mostrarPersonajes());
-        
     }
 
     @PutMapping(value = "personaje/{id}")
@@ -131,7 +126,7 @@ public class PersonajeController {
 
         GenericResponse rta = new GenericResponse();
 
-        if(service.buscarPorId(id) == null){
+        if (service.buscarPorId(id) == null) {
             rta.isOk = false;
             rta.message = "El id ingresado no existe";
             return ResponseEntity.badRequest().body(rta);

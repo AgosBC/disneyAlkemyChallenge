@@ -21,13 +21,5 @@ class DisneyApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
-	void valoresCalificacion(){
 
-	
-
-
-
-
-	}
 }

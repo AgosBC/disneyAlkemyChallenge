@@ -30,9 +30,6 @@ public class Admin extends Persona {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
         usuario.setAdmin(this);
-    }  
+    }
 
-    
-
-    
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import ar.com.alkemy.disney.entities.Genero;
 import ar.com.alkemy.disney.entities.Pelicula;
 import ar.com.alkemy.disney.entities.Personaje;
-import ar.com.alkemy.disney.models.request.AgregarPeliculaAlPersonaje;
 import ar.com.alkemy.disney.models.request.PeliculaNuevaInfo;
 import ar.com.alkemy.disney.models.response.PeliculaResponse;
 import ar.com.alkemy.disney.repos.PeliculaRespository;
@@ -17,12 +16,11 @@ import ar.com.alkemy.disney.repos.PeliculaRespository;
 public class PeliculaService {
 
     @Autowired
-    PeliculaRespository repo;
+    private PeliculaRespository repo;
 
     @Autowired
-    GeneroService generoService;
+    private GeneroService generoService;
 
-   
     public Pelicula buscarPorId(Integer id) {
         return repo.findByPeliculaId(id);
     }
@@ -42,7 +40,6 @@ public class PeliculaService {
         pelicula.setTitulo(peliculaNueva.titulo.toLowerCase());
         pelicula.setFechaCreacion(peliculaNueva.fechaCreacion);
         pelicula.setCalificacion(peliculaNueva.calificacion);
-        
 
         Genero genero = generoService.buscarPorId(peliculaNueva.generoId);
         genero.agregarPelicula(pelicula);
@@ -58,60 +55,44 @@ public class PeliculaService {
         List<Pelicula> peliculas = repo.findAllByOrderByTituloAsc();
         List<PeliculaResponse> lista = new ArrayList<>();
         for (Pelicula pelicula : peliculas) {
-            PeliculaResponse pR = new PeliculaResponse(pelicula.getImagen(), pelicula.getTitulo(), pelicula.getFechaCreacion());
+            PeliculaResponse pR = new PeliculaResponse(pelicula.getImagen(), pelicula.getTitulo(),
+                    pelicula.getFechaCreacion());
             lista.add(pR);
         }
         return lista;
     }
 
     public List<Pelicula> mostrarPeliculasOrden(String order) {
-        
+
         if (order.equalsIgnoreCase("DESC"))
             return repo.findAllByOrderByTituloDesc();
-        
-        else return repo.findAllByOrderByTituloAsc();   
-    
-        
+
+        else
+            return repo.findAllByOrderByTituloAsc();
+
     }
 
     public List<Pelicula> filtrarPorGenero(Integer genreId) {
-        
+
         List<Pelicula> peliculas = repo.findAll();
         List<Pelicula> peliculaPorGenero = new ArrayList<>();
-        
+
         Genero genero = generoService.buscarPorId(genreId);
 
         for (Pelicula pelicula : peliculas) {
             if (pelicula.getGenero().getNombre().equals(genero.getNombre()))
                 peliculaPorGenero.add(pelicula);
-            
+
         }
 
         return peliculaPorGenero;
 
-
-    
     }
 
-    /*public void agregarPersonaje(Integer peliculaId, Integer personajeId) {
+    public void eliminarPelicula(Integer id) {
+        Pelicula pelicula = this.buscarPorId(id);
+        repo.delete(pelicula);
+    }
 
-        Pelicula pelicula = this.buscarPorId(peliculaId);
-        Personaje personaje = personajeService.buscarPorId(personajeId);
-
-        pelicula.setPersonajes(personaje);
-
-    }*/
-
-    
-
-    
-
-    
-
-   
-
-
-    
-           
 
 }

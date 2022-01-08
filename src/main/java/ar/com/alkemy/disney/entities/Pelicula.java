@@ -31,7 +31,7 @@ public class Pelicula {
     @JoinColumn(name = "genero_id", referencedColumnName = "genero_id")
     private Genero genero;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToMany(mappedBy = "peliculas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Personaje> personajes = new ArrayList<>();
 

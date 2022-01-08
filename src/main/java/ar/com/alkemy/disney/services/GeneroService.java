@@ -15,24 +15,24 @@ public class GeneroService {
     private GeneroRespository repo;
 
     public boolean crear(Genero genero) {
-       if (existe(genero.getNombre())) 
+        if (existe(genero.getNombre()))
             return false;
         repo.save(genero);
-        return true;        
-        
+        return true;
+
     }
 
-    public Genero buscarPorId (Integer id){
+    public Genero buscarPorId(Integer id) {
         return repo.findByGeneroId(id);
     }
 
-    public List<Genero> mostrarGeneros(){
+    public List<Genero> mostrarGeneros() {
         return repo.findAll();
     }
 
-    private boolean existe(String nombre){
+    private boolean existe(String nombre) {
         Genero genero = repo.findByNombre(nombre);
         return genero != null;
     }
-    
+
 }

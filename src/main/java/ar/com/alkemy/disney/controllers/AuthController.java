@@ -1,8 +1,6 @@
-package  ar.com.alkemy.disney.controllers;
+package ar.com.alkemy.disney.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.validation.Valid;
 
@@ -26,27 +24,25 @@ public class AuthController {
     UsuarioService usuarioService;
     @Autowired
     private JWTTokenUtil jwtTokenUtil;
-    
 
     @PostMapping("/auth/register")
     public ResponseEntity<RegistrationResponse> postRegisterUser(@Valid @RequestBody RegistrationRequest req,
             BindingResult results) {
         RegistrationResponse r = new RegistrationResponse();
-        
-        if (results.hasErrors()){
+
+        if (results.hasErrors()) {
             r.isOk = false;
             r.message = "Hubo errores al recibir el request";
-            //recorrer cada error, crear una instancia de ErrorItemInfo y agregarlo a r.errores
             results.getFieldErrors().stream().forEach(e -> {
                 r.errors.add(new ErrorItemInfo(e.getField(), e.getDefaultMessage()));
             });
 
             return ResponseEntity.badRequest().body(r);
-           
+
         }
-        
+
         Usuario usuario = usuarioService.crearUsuario(req.userType, req.name, req.lastname, req.birthDate, req.username,
-        req.email, req.password);
+                req.email, req.password);
 
         r.isOk = true;
         r.message = "Bienvenido! su usuario ha sido registrado con exito";
@@ -65,7 +61,6 @@ public class AuthController {
         UserDetails userDetails = usuarioService.getUserAsUserDetail(usuarioLogueado);
         Map<String, Object> claims = usuarioService.getUserClaims(usuarioLogueado);
 
-        
         String token = jwtTokenUtil.generateToken(userDetails, claims);
 
         Usuario u = usuarioService.buscarPorUsername(authenticationRequest.username);
@@ -81,6 +76,5 @@ public class AuthController {
         return ResponseEntity.ok(rta);
 
     }
-    
-    
+
 }

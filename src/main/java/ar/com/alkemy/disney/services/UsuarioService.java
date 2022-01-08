@@ -62,7 +62,7 @@ public class UsuarioService {
     usuario.setFechaLogin(new Date());
 
     switch (tipoUsuario) {
-      case visitante:
+      case VISITANTE:
         Visitante visitante = new Visitante();
         visitante.setNombre(nombre);
         visitante.setApellido(apellido);
