@@ -3,6 +3,9 @@ package ar.com.alkemy.disney.entities;
 import java.util.*;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "personaje")
 public class Personaje {
@@ -23,6 +26,7 @@ public class Personaje {
     private String historia;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(name = "personaje_pelicula", 
             joinColumns = @JoinColumn(name = "personaje_id"),
             inverseJoinColumns = @JoinColumn(name = "pelicula_id"))
