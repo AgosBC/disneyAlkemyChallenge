@@ -26,8 +26,7 @@ public class AuthController {
     UsuarioService usuarioService;
     @Autowired
     private JWTTokenUtil jwtTokenUtil;
-    @Autowired
-    private JWTUserDetailsService userDetailsService;
+    
 
     @PostMapping("/auth/register")
     public ResponseEntity<RegistrationResponse> postRegisterUser(@Valid @RequestBody RegistrationRequest req,

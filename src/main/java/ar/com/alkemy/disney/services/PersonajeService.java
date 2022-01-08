@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import ar.com.alkemy.disney.entities.Pelicula;
 import ar.com.alkemy.disney.entities.Personaje;
-import ar.com.alkemy.disney.models.request.AgregarPeliculaAlPersonaje;
 import ar.com.alkemy.disney.models.request.PersonajeNuevoInfo;
 import ar.com.alkemy.disney.models.response.PersonajeResponse;
 import ar.com.alkemy.disney.repos.PersonajeRepository;
@@ -17,10 +16,10 @@ import ar.com.alkemy.disney.repos.PersonajeRepository;
 public class PersonajeService {
 
     @Autowired
-    PersonajeRepository repo;
+    private PersonajeRepository repo;
 
     @Autowired 
-    PeliculaService peliculaService;
+    private PeliculaService peliculaService;
 
     
 
@@ -32,15 +31,6 @@ public class PersonajeService {
         personaje.setEdad(personajeNuevo.edad);
         personaje.setPeso(personajeNuevo.peso);
         personaje.setHistoria(personajeNuevo.historia);
-
-        /*for (Pelicula pelicula : personajeNuevo.peliculas) {
-            peliculaService.buscarPorTitulo(pelicula.getTitulo());
-
-            if (pelicula.equals(null))
-                peliculaService.guardar(pelicula);
-                        
-        }
-        personaje.setPeliculas(personajeNuevo.peliculas);*/
        
         return repo.save(personaje);
     }
@@ -108,6 +98,8 @@ public class PersonajeService {
         personaje.setPeliculas(peliculas);
         repo.save(personaje);
     }
+
+    
 
 
 }

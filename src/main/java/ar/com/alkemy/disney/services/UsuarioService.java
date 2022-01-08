@@ -43,7 +43,7 @@ public class UsuarioService {
 
     Usuario u = buscarPorUsername(username);
 
-    if (u == null || !u.getPassword().equals(Crypto.encrypt(password, u.getEmail().toLowerCase()))) {
+    if (u == null || !u.getPassword().equals(Crypto.encrypt(password, u.getUsername()))) {
 
       throw new BadCredentialsException("Usuario o contraseña invalida");
     }
@@ -57,12 +57,12 @@ public class UsuarioService {
     Usuario usuario = new Usuario();
     usuario.setUsername(username);
     usuario.setEmail(email);
-    usuario.setPassword(Crypto.encrypt(password, email.toLowerCase()));
+    usuario.setPassword(Crypto.encrypt(password, username));
     usuario.setTipoUsuario(tipoUsuario);
     usuario.setFechaLogin(new Date());
 
     switch (tipoUsuario) {
-      case Visitante:
+      case visitante:
         Visitante visitante = new Visitante();
         visitante.setNombre(nombre);
         visitante.setApellido(apellido);

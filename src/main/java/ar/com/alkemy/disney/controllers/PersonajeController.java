@@ -89,6 +89,13 @@ public class PersonajeController {
         return ResponseEntity.ok(service.mostrarPersonajesDePelicula(idMovie));
     }
 
+    @GetMapping(value = "/caracters/details")
+    public ResponseEntity<List<Personaje>> mostrarDetalles(@RequestParam Integer age){
+        
+        return ResponseEntity.ok(service.mostrarPersonajes());
+        
+    }
+
     @PutMapping(value = "personaje/{id}")
     public ResponseEntity<GenericResponse> modificar(@PathVariable Integer id,
             @RequestBody PersonajeNuevoInfo personaje) {
@@ -109,7 +116,6 @@ public class PersonajeController {
             personajeActualizado.setEdad(personaje.edad);
             personajeActualizado.setPeso(personaje.peso);
             personajeActualizado.setHistoria(personaje.historia);
-            //personajeActualizado.setPeliculas(personaje.peliculas);
             service.guardar(personajeActualizado);
 
             rta.isOk = true;

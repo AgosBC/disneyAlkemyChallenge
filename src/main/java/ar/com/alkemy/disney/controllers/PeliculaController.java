@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.*;
 
 import ar.com.alkemy.disney.entities.Genero;
 import ar.com.alkemy.disney.entities.Pelicula;
+import ar.com.alkemy.disney.entities.Personaje;
 import ar.com.alkemy.disney.models.request.AgregarPeliculaAlPersonaje;
+import ar.com.alkemy.disney.models.request.AgregarPersonajeAPelicula;
 import ar.com.alkemy.disney.models.request.ErrorItemInfo;
 import ar.com.alkemy.disney.models.request.PeliculaNuevaInfo;
 import ar.com.alkemy.disney.models.response.GenericResponse;
 import ar.com.alkemy.disney.models.response.PeliculaResponse;
 import ar.com.alkemy.disney.services.GeneroService;
 import ar.com.alkemy.disney.services.PeliculaService;
+import ar.com.alkemy.disney.services.PersonajeService;
 
 @RestController
 public class PeliculaController {
@@ -53,13 +56,21 @@ public class PeliculaController {
 
     }
 
+    /*@PutMapping(value = "/movies/{id}")
+    public ResponseEntity<?> agregarPersonajeAPelicula (@PathVariable(name = "id") Integer peliculaId, @RequestBody AgregarPersonajeAPelicula personajesId){
+        List<Personaje> personajes = new ArrayList<>();
+    
+
+        return null;
+    }*/
+
     @GetMapping(value = "/movies")
     public ResponseEntity<List<PeliculaResponse>> mostrarPeliculas() {
 
         return ResponseEntity.ok(service.mostrarPeliculas());
     }
 
-    @GetMapping(value = "/movies", params = "order")
+    @GetMapping(value = "/movies", params = "order")//muestra peli completa, todos los detalles
     public ResponseEntity<List<Pelicula>> mostrarPeliculasOrden(@RequestParam(defaultValue = "ASC") String order) {
 
         if (order.equalsIgnoreCase("ASC") || order.equalsIgnoreCase("DESC"))
@@ -90,6 +101,17 @@ public class PeliculaController {
         return ResponseEntity.ok(peliculas);
 
         
+    }
+
+    @DeleteMapping(value = "/movie/{id}")
+    public ResponseEntity<GenericResponse> eliminarPelicula(@PathVariable Integer id){
+        service.eliminarPelicula(id);
+
+        GenericResponse rta = new GenericResponse();
+        rta.isOk = true;
+        rta.message = "esta Pelicula ha sido eliminada correctamente";
+
+        return ResponseEntity.ok(rta);
     }
 
    
