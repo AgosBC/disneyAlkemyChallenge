@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class PeliculaController {
     GeneroService generoService;
 
     @PostMapping("/movies")
+    @PreAuthorize("hasAuthority('CLAIM_userType_ADMIN')")
     public ResponseEntity<GenericResponse> postPelicula(@Valid @RequestBody PeliculaNuevaInfo peliculaNueva,
             BindingResult results) {
 
@@ -92,6 +94,7 @@ public class PeliculaController {
     }
 
     @DeleteMapping(value = "/movie/{id}")
+    @PreAuthorize("hasAuthority('CLAIM_userType_ADMIN')")
     public ResponseEntity<GenericResponse> eliminarPelicula(@PathVariable Integer id) {
         service.eliminarPelicula(id);
 
@@ -103,6 +106,7 @@ public class PeliculaController {
     }
 
     @PutMapping("/movies/{id}")
+    @PreAuthorize("hasAuthority('CLAIM_userType_ADMIN')")
     public ResponseEntity<GenericResponse> editar(@PathVariable Integer id, @RequestBody PeliculaNuevaInfo peliculaActualizada) {
 
         GenericResponse rta = new GenericResponse();

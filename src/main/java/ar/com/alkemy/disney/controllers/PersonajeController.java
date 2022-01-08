@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import ar.com.alkemy.disney.entities.Personaje;
@@ -22,6 +23,7 @@ public class PersonajeController {
     PersonajeService service;
 
     @PostMapping(value = "/characters")
+    @PreAuthorize("hasAuthority('CLAIM_userType_ADMIN')")
     public ResponseEntity<GenericResponse> postPersonajes(@RequestBody PersonajeNuevoInfo personajeNuevo) {
 
         GenericResponse rta = new GenericResponse();
@@ -37,6 +39,7 @@ public class PersonajeController {
     }
 
     @PutMapping(value = "characters/{id}")
+    @PreAuthorize("hasAuthority('CLAIM_userType_ADMIN')")
     public ResponseEntity<GenericResponse> agregarPeliculasAPersonaje(@PathVariable Integer id,
             @RequestBody AgregarPeliculaAlPersonaje peliculaId) {
         GenericResponse gR = new GenericResponse();
@@ -92,6 +95,7 @@ public class PersonajeController {
     }
 
     @PutMapping(value = "personaje/{id}")
+    @PreAuthorize("hasAuthority('CLAIM_userType_ADMIN')")
     public ResponseEntity<GenericResponse> modificar(@PathVariable Integer id,
             @RequestBody PersonajeNuevoInfo personaje) {
 
@@ -122,6 +126,7 @@ public class PersonajeController {
     }
 
     @DeleteMapping("personajes/{id}")
+    @PreAuthorize("hasAuthority('CLAIM_userType_ADMIN')")
     public ResponseEntity<GenericResponse> eliminar(@PathVariable Integer id) {
 
         GenericResponse rta = new GenericResponse();
